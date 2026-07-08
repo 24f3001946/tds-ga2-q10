@@ -20,11 +20,7 @@ allowed_origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://app-99u34m.example.com",
-        "https://exam.sanand.workers.dev",
-        "PASTE_THE_OUTPUT_OF_window.location.origin_HERE"
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
