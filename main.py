@@ -20,7 +20,10 @@ allowed_origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=[
+        "https://app-99u34m.example.com",
+        "https://exam.sanand.workers.dev",  # or the actual exam origin
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
