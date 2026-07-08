@@ -42,25 +42,19 @@ clients = {}
 @app.middleware("http")
 async def request_context(request: Request, call_next):
 
-    # Request ID
     request_id = request.headers.get("X-Request-ID")
     if not request_id:
         request_id = str(uuid.uuid4())
 
     request.state.request_id = request_id
 
-    # Rate limiting
     client = request.headers.get("X-Client-Id", "anonymous")
-
     now = time.time()
 
     if client not in clients:
         clients[client] = []
 
-    clients[client] = [
-        t for t in clients[client]
-        if now - t < WINDOW
-    ]
+    clients[client] = [t for t in clients[client] if now - t < WINDOW]
 
     if len(clients[client]) >= RATE_LIMIT:
         return JSONResponse(
@@ -72,11 +66,8 @@ async def request_context(request: Request, call_next):
     clients[client].append(now)
 
     response = await call_next(request)
-
     response.headers["X-Request-ID"] = request_id
-
     return response
-
 # -----------------------------
 # Endpoint
 # -----------------------------
